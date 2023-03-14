@@ -1,0 +1,47 @@
+name: Generate Docs
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    name: Build Docs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Use Node v18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: yarn
+      - name: Install deps
+        run: yarn install
+      - name: Build docs
+        run: npx typedoc --out docs/ src/
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: docs
+          path: docs/
+  upload:
+    name: Upload to gh-pages
+    deploy:
+      name: docs
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: docs
+          path: docs
+      - name: Setup gh-pages
+        uses: actions/configure-pages@v3
+      - name: Upload docs
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: 'docs'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
