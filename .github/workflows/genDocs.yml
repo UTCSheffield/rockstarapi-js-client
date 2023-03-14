@@ -26,7 +26,7 @@ jobs:
           path: docs/
   upload:
     name: Upload to gh-pages
-    deploy:
+    environment:
       name: docs
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
