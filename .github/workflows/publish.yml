@@ -30,6 +30,10 @@ jobs:
         with:
           node-version: 18
           cache: yarn
+      - name: Git configuration
+        run: |
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "GitHub Actions"
       - name: Install packages
         run: yarn install
       - name: Build
@@ -37,4 +41,4 @@ jobs:
       - run: npm version minor
       - run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
