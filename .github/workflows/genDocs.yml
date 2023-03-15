@@ -29,6 +29,7 @@ jobs:
           path: docs/
   upload:
     name: Upload to gh-pages
+    needs: build
     environment:
       name: docs
       url: ${{ steps.deployment.outputs.page_url }}
